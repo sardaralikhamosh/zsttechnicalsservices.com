@@ -15,16 +15,16 @@
     <!-- Header/Navigation -->
     <header class="header" id="header">
         <nav class="nav container">
-            <a href="index.html" class="nav__logo">
+            <a href="/" class="nav__logo">
                 <img src="assets/logo.png" alt="ZST Technical Services Logo" class="logo-img">
             </a>
             
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                    <li class="nav__item"><a href="#home" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="services.html" class="nav__link">Services</a></li>
-                    <li class="nav__item"><a href="about.html" class="nav__link">About</a></li>
-                    <li class="nav__item"><a href="contact.html" class="nav__link">Contact</a></li>
+                    <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
+                    <li class="nav__item"><a href="services" class="nav__link">Services</a></li>
+                    <li class="nav__item"><a href="about" class="nav__link">About</a></li>
+                    <li class="nav__item"><a href="contact" class="nav__link">Contact</a></li>
                 </ul>
                 
                 <div class="nav__close" id="nav-close">
