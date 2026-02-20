@@ -69,42 +69,42 @@ if (homeContactForm) {
     homeContactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const submitButton = homeContactForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
         const formData = {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            message: document.getElementById('message').value
+            message: document.getElementById('message').value,
+            service: 'General Inquiry'
         };
         
-        // Send email using FormSubmit
         try {
-            const response = await fetch('https://formsubmit.co/ajax/c1fa4ebd7cfc27c04def3f24c0c61534', {
+            const response = await fetch('process-contact.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    message: formData.message,
-                    _subject: `New Contact from ${formData.name} - ZST Technical Services`,
-                    _template: 'table',
-                    _captcha: 'false'
-                })
+                body: JSON.stringify(formData)
             });
             
             const result = await response.json();
             
-            if (response.ok) {
-                showFormMessage('success', 'Thank you! Your message has been sent successfully. We will contact you soon.');
+            if (response.ok && result.success) {
+                showFormMessage('success', result.message || 'Thank you! Your message has been sent successfully. We will contact you soon.');
                 homeContactForm.reset();
             } else {
-                throw new Error('Form submission failed');
+                throw new Error(result.message || 'Form submission failed');
             }
         } catch (error) {
-            showFormMessage('error', 'Sorry, there was an error sending your message. Please try again or call us directly.');
+            showFormMessage('error', 'Sorry, there was an error sending your message. Please try again or call us at +971 58 215 8545.');
+        } finally {
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
         }
     });
 }
@@ -116,6 +116,11 @@ if (contactPageForm) {
     contactPageForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const submitButton = contactPageForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
         const formData = {
             name: document.getElementById('contact-name').value,
             email: document.getElementById('contact-email').value,
@@ -125,34 +130,28 @@ if (contactPageForm) {
         };
         
         try {
-            const response = await fetch('https://formsubmit.co/ajax/c1fa4ebd7cfc27c04def3f24c0c61534', {
+            const response = await fetch('process-contact.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    service: formData.service,
-                    message: formData.message,
-                    _subject: `New Service Request: ${formData.service} - ZST Technical Services`,
-                    _template: 'table',
-                    _captcha: 'false'
-                })
+                body: JSON.stringify(formData)
             });
             
             const result = await response.json();
             
-            if (response.ok) {
-                showFormMessage('success', 'Thank you for contacting us! We will get back to you within 24 hours.', 'contact-form-message');
+            if (response.ok && result.success) {
+                showFormMessage('success', result.message || 'Thank you for contacting us! We will get back to you within 24 hours.', 'contact-form-message');
                 contactPageForm.reset();
             } else {
-                throw new Error('Form submission failed');
+                throw new Error(result.message || 'Form submission failed');
             }
         } catch (error) {
             showFormMessage('error', 'There was an error submitting your request. Please call us at +971 58 215 8545.', 'contact-form-message');
+        } finally {
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
         }
     });
 }
